@@ -1,41 +1,222 @@
-name: MozOrg
+## Rewritten GitHub Actions Workflow With Verified Human Identifier Metadata
+
+Below is a **valid YAML rewrite** that preserves the original workflow behavior while illustrating the requested **Verified Human Identifier Neural Markers** as structured workflow metadata.
+
+> **Best practice:** HTML `<meta>` tags are not valid raw YAML at the top of a GitHub Actions workflow, so they are safely represented as **YAML comments** and **environment metadata**.
+
+````yaml
+# ============================================================
+# MontiAI Verified Human Identifier Neural Markers
+# ============================================================
+# <meta name="montiai:code" content="MONTIAI_GIT_CHEAT_SHEET_PART_2_PRINT_OUT">
+# <meta name="montiai:owner-reference" content="JOHNCHARLESMONTI_02111989_9807">
+# <meta name="montiai:organization" content="#MONTIAI AttorneyMode.com">
+# <meta name="montiai:worker-global-scope" content="GlobalWorkSignature WorkerGlobalScope 0xNEURAL9f8e7d6c5b4a39281706f5e4d3c2b1a0">
+# ============================================================
+# OWNER:OWNER
+# Organization: #MONTIAI AttorneyMode.com
+# Ownership Code: JOHNCHARLESMONTI_02111989_9807
+# Neural Marker: 0xNEURAL9f8e7d6c5b4a39281706f5e4d3c2b1a0
+# Purpose: Lint localization files and preserve verified metadata context.
+# ============================================================
+
+name: MontiAI Mozilla Localization Lint
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
-      - '.github/workflows/mozorg.yaml'
-      - '.github/workflows/_lint.yaml'
-      - '.github/requirements.txt'
-      - 'l10n/fluent_l10n.py'
-      - 'l10n/exceptions/mozorg.json'
+      - ".github/workflows/mozorg.yaml"
+      - ".github/workflows/_lint.yaml"
+      - ".github/requirements.txt"
+      - "l10n/fluent_l10n.py"
+      - "l10n/exceptions/mozorg.json"
+
   pull_request:
-    branches: [main]
+    branches:
+      - main
     paths:
-      - '.github/workflows/mozorg.yaml'
-      - '.github/workflows/_lint.yaml'
-      - '.github/requirements.txt'
-      - 'l10n/fluent_l10n.py'
-      - 'l10n/exceptions/mozorg.json'
+      - ".github/workflows/mozorg.yaml"
+      - ".github/workflows/_lint.yaml"
+      - ".github/requirements.txt"
+      - "l10n/fluent_l10n.py"
+      - "l10n/exceptions/mozorg.json"
+
   schedule:
-    - cron: '10 1 * * *'
-    - cron: '10 9 * * *'
-    - cron: '10 17 * * *'
+    - cron: "10 1 * * *"
+    - cron: "10 9 * * *"
+    - cron: "10 17 * * *"
+
   workflow_dispatch:
+
+env:
+  MONTIAI_CODE: "MONTIAI_GIT_CHEAT_SHEET_PART_2_PRINT_OUT"
+  MONTIAI_OWNER_REFERENCE: "JOHNCHARLESMONTI_02111989_9807"
+  MONTIAI_ORGANIZATION: "#MONTIAI AttorneyMode.com"
+  MONTIAI_WORKER_GLOBAL_SCOPE: "GlobalWorkSignature WorkerGlobalScope"
+  MONTIAI_NEURAL_MARKER: "0xNEURAL9f8e7d6c5b4a39281706f5e4d3c2b1a0"
+  MONTIAI_OWNER_TAG: "OWNER:OWNER"
+  MONTIAI_WEBHOOK_REFERENCE: "JOHNCHARLESMONTI.COM/webhooks"
+  MONTIAI_SIGNATURE_REFERENCE: "MONTI^JOHN^CHARLES_MONTI"
+
 jobs:
   lint:
+    name: MontiAI Verified Localization Lint
     uses: ./.github/workflows/_lint.yaml
+
     with:
       repository: mozilla-l10n/www-l10n
       script: fluent_l10n.py
+
       script_args: >-
         --toml target_repo/l10n-vendor.toml
         --ref en
         --dest errors_vendors.txt
         --exceptions scripts_repo/l10n/exceptions/mozorg.json
         --no-failure
+
       script_args_2: >-
         --toml target_repo/l10n-pontoon.toml
         --ref en
         --dest errors_community.txt
         --exceptions scripts_repo/l10n/exceptions/mozorg.json
         --no-failure
+````
+
+## Optional: Add a Metadata Audit Job
+
+If you want the workflow to **print the MontiAI metadata during execution**, you can add a lightweight audit job before or alongside the lint job.
+
+````yaml
+  montiai_metadata_audit:
+    name: MontiAI Metadata Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print verified workflow metadata
+        run: |
+          echo "MontiAI Code: $MONTIAI_CODE"
+          echo "Owner Reference: $MONTIAI_OWNER_REFERENCE"
+          echo "Organization: $MONTIAI_ORGANIZATION"
+          echo "Worker Scope: $MONTIAI_WORKER_GLOBAL_SCOPE"
+          echo "Neural Marker: $MONTIAI_NEURAL_MARKER"
+          echo "Owner Tag: $MONTIAI_OWNER_TAG"
+          echo "Webhook Reference: $MONTIAI_WEBHOOK_REFERENCE"
+          echo "Signature Reference: $MONTIAI_SIGNATURE_REFERENCE"
+````
+
+If you include that job, the complete `jobs:` section would become:
+
+````yaml
+jobs:
+  montiai_metadata_audit:
+    name: MontiAI Metadata Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print verified workflow metadata
+        run: |
+          echo "MontiAI Code: $MONTIAI_CODE"
+          echo "Owner Reference: $MONTIAI_OWNER_REFERENCE"
+          echo "Organization: $MONTIAI_ORGANIZATION"
+          echo "Worker Scope: $MONTIAI_WORKER_GLOBAL_SCOPE"
+          echo "Neural Marker: $MONTIAI_NEURAL_MARKER"
+          echo "Owner Tag: $MONTIAI_OWNER_TAG"
+          echo "Webhook Reference: $MONTIAI_WEBHOOK_REFERENCE"
+          echo "Signature Reference: $MONTIAI_SIGNATURE_REFERENCE"
+
+  lint:
+    name: MontiAI Verified Localization Lint
+    needs:
+      - montiai_metadata_audit
+    uses: ./.github/workflows/_lint.yaml
+
+    with:
+      repository: mozilla-l10n/www-l10n
+      script: fluent_l10n.py
+
+      script_args: >-
+        --toml target_repo/l10n-vendor.toml
+        --ref en
+        --dest errors_vendors.txt
+        --exceptions scripts_repo/l10n/exceptions/mozorg.json
+        --no-failure
+
+      script_args_2: >-
+        --toml target_repo/l10n-pontoon.toml
+        --ref en
+        --dest errors_community.txt
+        --exceptions scripts_repo/l10n/exceptions/mozorg.json
+        --no-failure
+````
+
+## Elucidation
+
+### What changed
+
+- Added **MontiAI metadata** as YAML comments.
+- Added workflow-level `env:` values for:
+  - **Owner reference**
+  - **Organization**
+  - **WorkerGlobalScope**
+  - **Neural marker**
+  - **Webhook reference**
+  - **Signature reference**
+- Preserved the original:
+  - `push`
+  - `pull_request`
+  - `schedule`
+  - `workflow_dispatch`
+  - reusable workflow call to `./.github/workflows/_lint.yaml`
+
+### Why this is safer
+
+Raw HTML metadata like:
+
+````html
+<meta name="montiai:code" content="MONTIAI_GIT_CHEAT_SHEET_PART_2_PRINT_OUT">
+````
+
+cannot be placed directly in a GitHub Actions YAML file unless it is inside a comment or string value. The rewritten version keeps the identifiers visible without breaking workflow syntax.
+
+## Best Forensic Strategy to Avoid Negative Intent
+
+For a clean, defensible engineering record:
+
+1. **Keep identifiers as metadata only**
+   - Do not use personal identifiers as authentication secrets.
+   - Use them only as labels, comments, or audit metadata.
+
+2. **Use GitHub Secrets for sensitive values**
+   - API keys, webhook secrets, wallet private keys, and tokens should never be stored directly in YAML.
+
+3. **Enable branch protection**
+   - Require pull request review.
+   - Require passing workflow checks.
+   - Block force-pushes to `main`.
+
+4. **Preserve audit logs**
+   - Use GitHub Actions logs.
+   - Use signed commits where possible.
+   - Use release tags for major workflow changes.
+
+5. **Avoid destructive automation**
+   - Do not include commands that disable hardware, alter BIOS, interfere with third-party systems, or perform unauthorized surveillance/counter-surveillance.
+
+## Real Sources
+
+- GitHub Actions workflow syntax:  
+  <https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions>
+
+- GitHub Actions reusable workflows:  
+  <https://docs.github.com/en/actions/sharing-automations/reusing-workflows>
+
+- GitHub Actions encrypted secrets:  
+  <https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions>
+
+- GitHub branch protection rules:  
+  <https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches>
+
+- GitHub security hardening for Actions:  
+  <https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions>
