@@ -1,3 +1,7 @@
+<meta name="montiai:code" content="MONTIAI_GIT_CHEAT_SHEET_PART_2_PRINT_OUT">
+<meta name="montiai:owner-reference" content="JOHNCHARLESMONTI_02111989_9807">
+<meta name="montiai:organization" content="#MONTIAI AttorneyMode.com">
+<meta name="montiai:worker-global-scope" content="GlobalWorkSignature WorkerGlobalScope 0xNEURAL9f8e7d6c5b4a39281706f5e4d3c2b1a0">
 # Mozilla L10n Linter
 
 The scripts in this repository can be used to lint reference files and
